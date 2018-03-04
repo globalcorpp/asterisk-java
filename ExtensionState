@@ -1,0 +1,52 @@
+
+import java.io.IOException;
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionFactory;
+import org.asteriskjava.manager.TimeoutException;
+import org.asteriskjava.manager.action.ExtensionStateAction;
+import org.asteriskjava.manager.response.ExtensionStateResponse;
+import org.asteriskjava.manager.response.ManagerResponse;
+
+public class ExtensionState {
+
+    private final ManagerConnection managerConnection;
+
+    public ExtensionState() throws IOException {
+
+        ManagerConnectionFactory factory = new ManagerConnectionFactory("ip", "user", "pass");
+        this.managerConnection = factory.createManagerConnection();
+    }
+
+    public void run() throws IOException, AuthenticationFailedException, TimeoutException {
+
+        ExtensionStateAction extensionState;
+        ManagerResponse esResponse;
+
+        extensionState = new ExtensionStateAction();
+        extensionState.setExten("1000");
+        extensionState.setContext("from-internal");
+        managerConnection.login();
+        esResponse = managerConnection.sendAction(extensionState, 3000);
+        System.out.println(" .:: get RESULT ::. ");
+        System.out.println(esResponse.getResponse());
+        System.out.println(esResponse);
+        ExtensionStateResponse esResponseGetStatus = (ExtensionStateResponse) esResponse;
+        System.out.println(esResponseGetStatus.getStatus());
+
+//        Status codes:
+//        -1 = Extension not found
+//        0 = Idle
+//        1 = In Use
+//        2 = Busy
+//        4 = Unavailable
+//        8 = Ringing
+//        16 = On Hold
+        managerConnection.logoff();
+    }
+
+    public static void main(String[] args) throws Exception {
+        new ExtensionState().run();
+
+    }
+}
