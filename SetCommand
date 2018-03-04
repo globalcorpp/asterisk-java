@@ -1,0 +1,46 @@
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionFactory;
+import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.response.CommandResponse;
+
+public class SetCommand {
+
+    private final ManagerConnection c;
+
+    public SetCommand() throws Exception {
+        ManagerConnectionFactory factory = new ManagerConnectionFactory("ip", "user", "pass");
+        c = factory.createManagerConnection();
+    }
+
+    public void run() throws Exception {
+        c.login();
+
+        CommandAction action;
+        CommandResponse response;
+        List<String> list = new ArrayList<String>();
+
+        action = new CommandAction();
+        //action.setCommand("core show help");
+        action.setCommand("sip show peers"); // sip show peer 1000
+        
+        response = (CommandResponse) c.sendAction(action);
+
+        list = response.getResult();
+        System.out.println(list.size());
+        int i = 0;
+        while (i < list.size()) {
+            System.out.println(list.get(i));
+            i++;
+        }
+
+        c.logoff();
+    }
+
+    public static void main(String[] args) throws Exception {
+        new SetCommand().run();
+    }
+}
