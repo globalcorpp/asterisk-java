@@ -1,0 +1,40 @@
+
+import java.io.IOException;
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionFactory;
+import org.asteriskjava.manager.TimeoutException;
+import org.asteriskjava.manager.action.CoreSettingsAction;
+import org.asteriskjava.manager.response.CoreSettingsResponse;
+import org.asteriskjava.manager.response.ManagerResponse;
+
+public class CoreStatus {
+
+    private final ManagerConnection mc;
+
+    public CoreStatus() throws IOException {
+
+        ManagerConnectionFactory fc = new ManagerConnectionFactory("ip", "user", "pass");
+        this.mc = fc.createManagerConnection();
+    }
+
+    public void run() throws IOException, AuthenticationFailedException, TimeoutException {
+        CoreSettingsAction sendAction;
+        ManagerResponse recResponse;
+        CoreSettingsResponse coreSettingResponse;
+        sendAction = new CoreSettingsAction();
+        coreSettingResponse = new CoreSettingsResponse();
+        mc.login();
+        recResponse = mc.sendAction(sendAction, 3000);
+        System.out.println("CoreStatus.run()");
+        CoreSettingsResponse coreVersion = (CoreSettingsResponse) recResponse;
+        System.out.println(coreVersion.getAsteriskVersion());
+        mc.logoff();
+    }
+
+    public static void main(String[] args) throws Exception {
+        CoreStatus coreStatus = new CoreStatus();
+        coreStatus.run();
+    }
+
+}
