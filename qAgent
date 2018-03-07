@@ -1,0 +1,15 @@
+How to say Agent number in asterisk 
+
+create a queue with static member
+
+add this parameters (setinterfacevar=yes) to the first line of queue definition in "queues_additional.conf"
+
+copy queue context that modified to "queues_custom.conf"
+
+open "extensions_additional.conf"
+
+search queue number that modified and search line that include Queue() then put your AGI script in sixth parameters and save
+
+open "extensions_override_freepbx.conf" and copy "ext-queues" that modified in previous step in this file
+
+reload asterisk engine
