@@ -1,0 +1,18 @@
+#!/usr/bin/php -q
+<?php
+set_time_limit(30);
+require('phpagi.php');
+error_reporting(E_ALL);
+$agi = new AGI();
+$agi->verbose("@@@@@@@@@@@@@@@@@@@@@@@@");
+$res = $agi->get_variable('MEMBERINTERFACE');
+$agent_Num = intval(substr($res['data'], 6, 4));
+$agi->verbose("log agent:" . $agent_Num);
+$agi->verbose("@@@@@@@@@@@@@@@@@@@@@@@@");
+$agi->verbose($res['data']);
+$agi->say_number($agent_Num);
+
+$agi->verbose("##########################");
+$r = $agi->get_variable("CALLERID(num)"); //name
+$agi->verbose("rrrrrrrrrrrrrrrr: ".$r['data']);
+?>
