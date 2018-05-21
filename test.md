@@ -12,4 +12,4 @@ this is a test
 
 italic Mode: *italic Mode* 
 
-[link to a place!](http://google.com)
+[link to a place!](http://yahoo.com)
