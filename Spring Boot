@@ -1,0 +1,6 @@
+spring.mvc.view.prefix=/views/
+spring.mvc.view.suffix=.jsp
+
+#spring.main.banner-mode=off
+#logging.level.org.springframework=ERROR
+mymessage=Hello there
